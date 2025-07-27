@@ -27,14 +27,21 @@ else
   git clone https://github.com/arturo-mayorga/nvim-config.git "$CONFIG_DIR"
 fi
 
-# Ensure Neovim is installed
+# Clone lazy.nvim directly before launching NeoVim
+LAZY_PATH="${LOCALAPPDATA:-$HOME/.local/share}/nvim/lazy/lazy.nvim"
+if [ ! -d "$LAZY_PATH" ]; then
+  echo "📥 Cloning lazy.nvim plugin manager..."
+  git clone --filter=blob:none https://github.com/folke/lazy.nvim "$LAZY_PATH"
+fi
+
+# Confirm nvim is installed
 if ! command -v nvim &> /dev/null; then
   echo "❌ NeoVim not found. Please install it first."
   exit 1
 fi
 
 # Install plugins
-echo "🔄 Syncing plugins via Lazy.nvim..."
+echo "🔄 Syncing plugins via lazy.nvim..."
 nvim --headless -c 'lua require("lazy").sync()' +qa
 
 echo "✅ Bootstrap complete!"
