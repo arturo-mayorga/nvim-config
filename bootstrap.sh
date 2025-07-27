@@ -23,7 +23,7 @@ echo "→ data  : $DATA_DIR"
 if [ -d "$CONFIG_DIR/.git" ]; then
   git -C "$CONFIG_DIR" pull --ff-only
 else
-  git clone https://github.com/<you>/nvim-config "$CONFIG_DIR"
+  git clone https://github.com/arturo-mayorga/nvim-config "$CONFIG_DIR"
 fi
 
 # 4. Bootstrap lazy.nvim ---------------------------------------------------
