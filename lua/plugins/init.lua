@@ -5,7 +5,7 @@ return require("lazy").setup({
 
   -- LSP
   { "neovim/nvim-lspconfig" },
-  { "williamboman/mason.nvim", build = ":MasonUpdate" },
+  { "williamboman/mason.nvim"},
   { "williamboman/mason-lspconfig.nvim" },
 
   -- Format/lint
