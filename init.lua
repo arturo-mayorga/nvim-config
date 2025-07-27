@@ -18,6 +18,6 @@ require("lazy").setup("plugins", {
 -- 3. non‑plugin config ----------------------------------------------------
 require("config.lsp")
 require("config.dap")
-require("config.none_ls")
+require("config.none-ls")
 require("config.treesitter")
 require("keymaps")

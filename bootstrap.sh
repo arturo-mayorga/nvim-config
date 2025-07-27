@@ -12,8 +12,8 @@ if ! command -v git >/dev/null 2>&1; then
 fi
 
 # 2. Ask Neovim for its own stdpaths ---------------------------------------
-CONFIG_DIR=$(nvim -u NONE --headless -c 'lua print(vim.fn.stdpath("config"))' +qa)
-DATA_DIR=$(nvim  -u NONE --headless -c 'lua print(vim.fn.stdpath("data"))'   +qa)
+CONFIG_DIR=$(nvim -u NONE --headless -c 'lua print(vim.fn.stdpath("config"))' +qa 2>&1)
+DATA_DIR=$(nvim  -u NONE --headless -c 'lua print(vim.fn.stdpath("data"))'   +qa 2>&1)
 LAZY_PATH="$DATA_DIR/lazy/lazy.nvim"
 
 echo "CONFIG_DIR: $CONFIG_DIR"
