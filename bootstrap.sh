@@ -13,7 +13,7 @@ echo "📦 Detected OS: $OS"
 if [[ "$OS" == "Linux" || "$OS" == "Darwin" ]]; then
   CONFIG_DIR="$HOME/.config/nvim"
 elif [[ "$OS" =~ "MINGW" || "$OS" =~ "MSYS" ]]; then
-  CONFIG_DIR="$APPDATA/nvim"
+  CONFIG_DIR="${APPDATA//\\//}/nvim"
 else
   echo "❌ Unsupported OS: $OS"
   exit 1
