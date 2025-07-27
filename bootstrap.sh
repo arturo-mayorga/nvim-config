@@ -16,8 +16,8 @@ CONFIG_DIR=$(nvim -u NONE --headless -c 'lua print(vim.fn.stdpath("config"))' +q
 DATA_DIR=$(nvim  -u NONE --headless -c 'lua print(vim.fn.stdpath("data"))'   +qa)
 LAZY_PATH="$DATA_DIR/lazy/lazy.nvim"
 
-echo "→ config: $CONFIG_DIR"
-echo "→ data  : $DATA_DIR"
+echo "CONFIG_DIR: $CONFIG_DIR"
+echo "DATA_DIR: $DATA_DIR"
 
 # 3. Get your personal config ---------------------------------------------
 if [ -d "$CONFIG_DIR/.git" ]; then
