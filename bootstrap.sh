@@ -34,6 +34,21 @@ if [ ! -d "$LAZY_PATH" ]; then
   git clone --filter=blob:none https://github.com/folke/lazy.nvim "$LAZY_PATH"
 fi
 
+# Patch init.lua to prepend lazy.nvim to runtime path
+INIT_LUA="$CONFIG_DIR/init.lua"
+if ! grep -q 'lazy.nvim' "$INIT_LUA"; then
+  echo "🛠️  Patching init.lua to include lazy.nvim bootstrap..."
+  sed -i.bak "1i\\
+-- Bootstrap lazy.nvim\\
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'\\
+if not vim.loop.fs_stat(lazypath) then\\
+  vim.fn.system({ 'git', 'clone', '--filter=blob:none', 'https://github.com/folke/lazy.nvim.git', lazypath })\\
+end\\
+vim.opt.rtp:prepend(lazypath)\\
+" "$INIT_LUA"
+  echo "✅ Patched init.lua"
+fi
+
 # Confirm nvim is installed
 if ! command -v nvim &> /dev/null; then
   echo "❌ NeoVim not found. Please install it first."
