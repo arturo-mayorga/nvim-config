@@ -28,7 +28,7 @@ else
 fi
 
 # Clone lazy.nvim directly before launching NeoVim
-LAZY_PATH="${LOCALAPPDATA:-$HOME/.local/share}/nvim/lazy/lazy.nvim"
+LAZY_PATH="${LOCALAPPDATA:-$HOME/.local/share}/nvim-data/lazy/lazy.nvim"
 if [ ! -d "$LAZY_PATH" ]; then
   echo "📥 Cloning lazy.nvim plugin manager..."
   git clone --filter=blob:none https://github.com/folke/lazy.nvim "$LAZY_PATH"
