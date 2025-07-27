@@ -34,8 +34,12 @@ if [ ! -d "$LAZY_PATH" ]; then
   git clone --filter=blob:none https://github.com/folke/lazy.nvim "$LAZY_PATH"
 fi
 
+echo "📝 CONFIG_DIR: $CONFIG_DIR"
+echo "📝 LAZY_PATH: $LAZY_PATH"
+
 # Patch init.lua to prepend lazy.nvim to runtime path
 INIT_LUA="$CONFIG_DIR/init.lua"
+echo "📝 INIT_LUA: $INIT_LUA"
 if ! grep -q 'lazy.nvim' "$INIT_LUA"; then
   echo "🛠️  Patching init.lua to include lazy.nvim bootstrap..."
   sed -i.bak "1i\\
@@ -57,6 +61,9 @@ fi
 
 # Install plugins
 echo "🔄 Syncing plugins via lazy.nvim..."
+echo "📝 Dumping stdpath('data') from nvim:"
+nvim --headless -c 'lua print("NVIM stdpath(data):", vim.fn.stdpath("data"))' +qa
+
 nvim --headless -c 'lua require("lazy").sync()' +qa
 
 echo "✅ Bootstrap complete!"
