@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# prereq:
+# export PATH="/c/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.30.30705/bin/Hostx64/x64:$PATH"
+
 echo "📝 SHELL: $SHELL"
 echo "📝 USER: $USER"
 echo "📝 HOME: $HOME"
@@ -38,10 +41,10 @@ else
 fi
 
 # Clone lazy.nvim directly before launching NeoVim
-echo "📝 About to run: nvim --headless -c 'lua print(vim.fn.stdpath(\"data\") .. \"/lazy/lazy.nvim\")' +qa"
 NVIM_OUTPUT=$(nvim --headless -c 'lua print(vim.fn.stdpath("data") .. "/lazy/lazy.nvim")' +qa 2>&1)
 echo "📝 NVIM_OUTPUT: $NVIM_OUTPUT"
-LAZY_PATH=$(echo "$NVIM_OUTPUT" | tail -n 1 | tr -d '\r\n')
+# Only grab the line that looks like a path
+LAZY_PATH=$(echo "$NVIM_OUTPUT" | grep -E '[/\\]lazy[/\\]lazy\.nvim' | head -n 1 | tr -d '\r\n')
 echo "📝 (from nvim) LAZY_PATH: $LAZY_PATH"
 if [ ! -d "$LAZY_PATH" ]; then
   echo "📥 Cloning lazy.nvim plugin manager..."
@@ -78,6 +81,6 @@ echo "🔄 Syncing plugins via lazy.nvim..."
 echo "📝 Dumping stdpath('data') from nvim:"
 nvim --headless -c 'lua print("NVIM stdpath(data):", vim.fn.stdpath("data"))' +qa
 
-nvim --headless --cmd "set rtp+=${CONFIG_DIR}" -u "$INIT_LUA" -c 'lua require(\"lazy\").sync()' +qa
+nvim --headless --cmd "set rtp+=${CONFIG_DIR}" -u "$INIT_LUA" -c 'lua require("lazy").sync()' +qa
 
 echo "✅ Bootstrap complete!"
