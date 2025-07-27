@@ -4,6 +4,7 @@ echo "📝 SHELL: $SHELL"
 echo "📝 USER: $USER"
 echo "📝 HOME: $HOME"
 echo "📝 APPDATA: $APPDATA"
+echo "📝 LOCALAPPDATA: $LOCALAPPDATA"
 echo "📝 PATH: $PATH"
 which nvim
 nvim --version
@@ -21,15 +22,16 @@ echo "📦 Detected OS: $OS"
 if [[ "$OS" == "Linux" || "$OS" == "Darwin" ]]; then
   CONFIG_DIR="$HOME/.config/nvim"
 elif [[ "$OS" =~ "MINGW" || "$OS" =~ "MSYS" ]]; then
-  CONFIG_DIR="${APPDATA//\\//}/nvim"
+  CONFIG_DIR="${LOCALAPPDATA//\\//}/nvim"
 else
   echo "❌ Unsupported OS: $OS"
   exit 1
 fi
 
 # Clone your NeoVim config
-if [ -d "$CONFIG_DIR" ]; then
-  echo "📁 Existing config found at $CONFIG_DIR. Skipping clone."
+if [ -d "$CONFIG_DIR/.git" ]; then
+  echo "🔄 Updating existing config at $CONFIG_DIR..."
+  git -C "$CONFIG_DIR" pull
 else
   echo "📥 Cloning config into $CONFIG_DIR..."
   git clone https://github.com/arturo-mayorga/nvim-config.git "$CONFIG_DIR"
