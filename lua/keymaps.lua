@@ -1,15 +1,55 @@
 -- lua/keymaps.lua
+-- Centralised key mappings for Neovim
+--------------------------------------------------------------
 
-local map = vim.keymap.set
+local map  = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
--- Fuzzy file finder
-map("n", "<C-p>", require("telescope.builtin").find_files, { desc = "Telescope Find Files" })
+-- Helper: lazy‑require Telescope built‑ins --------------------
+local function telescope(builtin)
+  return function() require("telescope.builtin")[builtin]() end
+end
 
--- LSP go to definition
-map('n', 'gd', vim.lsp.buf.definition, { noremap = true, silent = true })
+----------------------------------------------------------------
+-- Telescope ---------------------------------------------------
+----------------------------------------------------------------
+map("n", "<C-p>",   telescope("find_files"),  vim.tbl_extend("force", opts, { desc = "Telescope: find files" }))
+map("n", "<leader>ff", telescope("live_grep"), vim.tbl_extend("force", opts, { desc = "Telescope: live grep" }))
+map("n", "<leader>fb", telescope("buffers"),   vim.tbl_extend("force", opts, { desc = "Telescope: buffers" }))
 
--- Add more here later as needed
--- e.g. map("n", "<leader>cc", ":CopilotChatToggle<CR>", { desc = "Toggle Copilot Chat" })
--- map("n", "<leader>cc", ":CopilotChatToggle<CR>", { desc = "Copilot Chat Toggle" })
--- map("n", "<leader>ff", require("telescope.builtin").live_grep, { desc = "Live Grep" })
--- map("n", "<leader>fb", require("telescope.builtin").buffers, { desc = "Find Buffers" })
+----------------------------------------------------------------
+-- LSP ---------------------------------------------------------
+----------------------------------------------------------------
+map("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "LSP: goto definition" }))
+map("n", "K",  vim.lsp.buf.hover,      vim.tbl_extend("force", opts, { desc = "LSP: hover doc" }))
+map("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "LSP: rename symbol" }))
+
+----------------------------------------------------------------
+-- Diagnostics -------------------------------------------------
+----------------------------------------------------------------
+map("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "Prev diagnostic" }))
+map("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("force", opts, { desc = "Next diagnostic" }))
+map("n", "<leader>dl", vim.diagnostic.open_float, vim.tbl_extend("force", opts, { desc = "Line diagnostics" }))
+map("n", "<leader>dq", vim.diagnostic.setloclist, vim.tbl_extend("force", opts, { desc = "Diagnostics → loclist" }))
+
+----------------------------------------------------------------
+-- DAP (Debugging) --------------------------------------------
+----------------------------------------------------------------
+map("n", "<leader>dc", function() require("dap").continue() end,          vim.tbl_extend("force", opts, { desc = "DAP: continue" }))
+map("n", "<leader>db", function() require("dap").toggle_breakpoint() end, vim.tbl_extend("force", opts, { desc = "DAP: toggle breakpoint" }))
+map("n", "<leader>du", function() require("dapui").toggle() end,          vim.tbl_extend("force", opts, { desc = "DAP‑ui: toggle" }))
+
+----------------------------------------------------------------
+-- Quality‑of‑life --------------------------------------------
+----------------------------------------------------------------
+-- Quick save in any mode
+map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", vim.tbl_extend("force", opts, { desc = "Save file" }))
+
+-- Window navigation like tmux / VS Code
+map("n", "<C-h>", "<C-w>h", opts)
+map("n", "<C-j>", "<C-w>j", opts)
+map("n", "<C-k>", "<C-w>k", opts)
+map("n", "<C-l>", "<C-w>l", opts)
+
+-- Paste over selection without yanking it
+map("x", "<leader>p", '"_dP', vim.tbl_extend("force", opts, { desc = "Paste w/o clobbering register" }))

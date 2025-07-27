@@ -1,23 +1,23 @@
-vim.opt.rtp:prepend(vim.fn.stdpath("config"))
--- init.lua
--- Bootstrap lazy.nvim if not present
+-- ~/.config/nvim/init.lua -----------------------------------------------
+-- 1. bootstrap lazy.nvim -------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
-    "git", "clone", "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim", lazypath
+    "git", "clone", "--filter=blob:none", "--branch=stable",
+    "https://github.com/folke/lazy.nvim.git", lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load plugins
-require("plugins")
+-- 2. load plugin specs from lua/plugins/* --------------------------------
+require("lazy").setup("plugins", {
+  change_detection = { notify = false },
+  install          = { colorscheme = { "tokyonight", "habamax" } },
+})
 
--- Load config
+-- 3. non‑plugin config ----------------------------------------------------
 require("config.lsp")
 require("config.dap")
-require("config.none-ls")
+require("config.none_ls")
 require("config.treesitter")
-
 require("keymaps")
-

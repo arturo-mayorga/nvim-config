@@ -1,86 +1,37 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# prereq:
-# export PATH="/c/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.30.30705/bin/Hostx64/x64:$PATH"
-
-echo "📝 SHELL: $SHELL"
-echo "📝 USER: $USER"
-echo "📝 HOME: $HOME"
-echo "📝 APPDATA: $APPDATA"
-echo "📝 LOCALAPPDATA: $LOCALAPPDATA"
-echo "📝 PATH: $PATH"
-which nvim
-nvim --version
-
-set -e  # Exit on error
-set -u  # Treat unset variables as error
-
-echo "🔧 Bootstrapping NeoVim configuration..."
-
-# Detect platform
-OS=$(uname -s)
-echo "📦 Detected OS: $OS"
-
-# Determine config location
-if [[ "$OS" == "Linux" || "$OS" == "Darwin" ]]; then
-  CONFIG_DIR="$HOME/.config/nvim"
-elif [[ "$OS" =~ "MINGW" || "$OS" =~ "MSYS" ]]; then
-  CONFIG_DIR="${LOCALAPPDATA//\\//}/nvim"
-else
-  echo "❌ Unsupported OS: $OS"
+# 1. Check prerequisites ---------------------------------------------------
+if ! command -v nvim >/dev/null 2>&1; then
+  echo "Neovim ≥0.9 is required — install it first." >&2
+  exit 1
+fi
+if ! command -v git >/dev/null 2>&1; then
+  echo "Git is required." >&2
   exit 1
 fi
 
-# Clone your NeoVim config
+# 2. Ask Neovim for its own stdpaths ---------------------------------------
+CONFIG_DIR=$(nvim -u NONE --headless -c 'lua print(vim.fn.stdpath("config"))' +qa)
+DATA_DIR=$(nvim  -u NONE --headless -c 'lua print(vim.fn.stdpath("data"))'   +qa)
+LAZY_PATH="$DATA_DIR/lazy/lazy.nvim"
+
+echo "→ config: $CONFIG_DIR"
+echo "→ data  : $DATA_DIR"
+
+# 3. Get your personal config ---------------------------------------------
 if [ -d "$CONFIG_DIR/.git" ]; then
-  echo "🔄 Updating existing config at $CONFIG_DIR..."
-  git -C "$CONFIG_DIR" pull
+  git -C "$CONFIG_DIR" pull --ff-only
 else
-  echo "📥 Cloning config into $CONFIG_DIR..."
-  git clone https://github.com/arturo-mayorga/nvim-config.git "$CONFIG_DIR"
+  git clone https://github.com/<you>/nvim-config "$CONFIG_DIR"
 fi
 
-# Clone lazy.nvim directly before launching NeoVim
-NVIM_OUTPUT=$(nvim --headless -c 'lua print(vim.fn.stdpath("data") .. "/lazy/lazy.nvim")' +qa 2>&1)
-echo "📝 NVIM_OUTPUT: $NVIM_OUTPUT"
-# Only grab the line that looks like a path
-LAZY_PATH=$(echo "$NVIM_OUTPUT" | grep -E '[/\\]lazy[/\\]lazy\.nvim' | head -n 1 | tr -d '\r\n')
-echo "📝 (from nvim) LAZY_PATH: $LAZY_PATH"
+# 4. Bootstrap lazy.nvim ---------------------------------------------------
 if [ ! -d "$LAZY_PATH" ]; then
-  echo "📥 Cloning lazy.nvim plugin manager..."
   git clone --filter=blob:none https://github.com/folke/lazy.nvim "$LAZY_PATH"
 fi
 
-echo "📝 CONFIG_DIR: $CONFIG_DIR"
-echo "📝 LAZY_PATH: $LAZY_PATH"
+# 5. Install/upgrade plugins ----------------------------------------------
+nvim --headless "+Lazy! sync" +qa
 
-# Patch init.lua to prepend lazy.nvim to runtime path
-INIT_LUA="$CONFIG_DIR/init.lua"
-echo "📝 INIT_LUA: $INIT_LUA"
-if ! grep -q 'lazy.nvim' "$INIT_LUA"; then
-  echo "🛠️  Patching init.lua to include lazy.nvim bootstrap..."
-  sed -i.bak "1i\\
--- Bootstrap lazy.nvim\\
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'\\
-if not vim.loop.fs_stat(lazypath) then\\
-  vim.fn.system({ 'git', 'clone', '--filter=blob:none', 'https://github.com/folke/lazy.nvim.git', lazypath })\\
-end\\
-vim.opt.rtp:prepend(lazypath)\\
-" "$INIT_LUA"
-  echo "✅ Patched init.lua"
-fi
-
-# Confirm nvim is installed
-if ! command -v nvim &> /dev/null; then
-  echo "❌ NeoVim not found. Please install it first."
-  exit 1
-fi
-
-# Install plugins
-echo "🔄 Syncing plugins via lazy.nvim..."
-echo "📝 Dumping stdpath('data') from nvim:"
-nvim --headless -c 'lua print("NVIM stdpath(data):", vim.fn.stdpath("data"))' +qa
-
-nvim --headless --cmd "set rtp+=${CONFIG_DIR}" -u "$INIT_LUA" -c 'lua require("lazy").sync()' +qa
-
-echo "✅ Bootstrap complete!"
+echo "✓ Neovim ready to go!"
