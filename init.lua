@@ -1,3 +1,4 @@
+vim.opt.rtp:prepend(vim.fn.stdpath("config"))
 -- init.lua
 -- Bootstrap lazy.nvim if not present
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
