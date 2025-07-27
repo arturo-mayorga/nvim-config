@@ -35,6 +35,6 @@ fi
 
 # Install plugins
 echo "🔄 Syncing plugins via Lazy.nvim..."
-nvim --headless "+Lazy! sync" +qa
+nvim --headless -c 'lua require("lazy").sync()' +qa
 
 echo "✅ Bootstrap complete!"
