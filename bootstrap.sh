@@ -1,6 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# 0. if we're on Windows, prepare MSVC first -------------------------------
+if [[ "$OS" == "Windows_NT" ]]; then
+  # Find the newest VS / Build‑Tools install via vswhere (ships with VS ≥2017)
+  VSWHERE="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
+  if [[ -x "$VSWHERE" ]]; then
+    VSROOT=$("$VSWHERE" -latest \
+                      -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
+                      -property installationPath | tr -d '\r')
+    VSDEV="$VSROOT/Common7/Tools/VsDevCmd.bat"
+  else
+    # fallback – hard‑code BuildTools 2022
+    VSDEV="/c/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/Common7/Tools/VsDevCmd.bat"
+  fi
+
+  # Convert to a proper Windows path for cmd.exe
+  VSDEV_WIN=$(cygpath -w "$VSDEV")
+
+  echo "→ Bootstrapping MSVC via: $VSDEV_WIN"
+
+  # one‑shot: run VsDevCmd *and* Neovim in the same cmd session
+  cmd.exe /C "\"$VSDEV_WIN\" -arch=x64 -host_arch=x64 \
+      && nvim --headless '+Lazy\! sync' +qa"
+  exit 0       # everything after this is Linux/macOS only
+fi
+
 # 1. Check prerequisites ---------------------------------------------------
 if ! command -v nvim >/dev/null 2>&1; then
   echo "Neovim ≥0.9 is required — install it first." >&2
