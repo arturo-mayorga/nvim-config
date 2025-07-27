@@ -13,7 +13,10 @@ return require("lazy").setup({
 
   -- DAP
   { "mfussenegger/nvim-dap" },
-  { "rcarriga/nvim-dap-ui" },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "nvim-neotest/nvim-nio" },
+  },
   { "jay-babu/mason-nvim-dap.nvim" },
 
   -- Treesitter
