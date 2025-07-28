@@ -20,6 +20,7 @@ return {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 
   -- AI / Copilot chat
+  { "zbirenbaum/copilot.lua",           lazy = false },  
   { "CopilotC-Nvim/CopilotChat.nvim", dependencies = "nvim-lua/plenary.nvim" },
 
   -- Theme with full Tree‑sitter + LSP support

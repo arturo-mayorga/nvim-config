@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # 0. if we're on Windows, prepare MSVC first -------------------------------
-if [[ "$OS" == "Windows_NT" ]]; then
+if [[ "${OS:-}" == "Windows_NT" ]]; then
   # Find the newest VS / Build‑Tools install via vswhere (ships with VS ≥2017)
   VSWHERE="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
   if [[ -x "$VSWHERE" ]]; then
@@ -45,7 +45,7 @@ echo "→ Bootstrapping via $TMPBAT_WIN"
 cmd.exe /C "\"$TMPBAT_WIN\""
 
  rm -f "$TMPBAT"                           # tidy up
-exit $?
+
 fi
 
 # 1. Check prerequisites ---------------------------------------------------
