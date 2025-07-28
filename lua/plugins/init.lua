@@ -21,4 +21,10 @@ return {
 
   -- AI / Copilot chat
   { "CopilotC-Nvim/CopilotChat.nvim", dependencies = "nvim-lua/plenary.nvim" },
+
+  -- Theme with full Tree‑sitter + LSP support
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
+
+  -- Auto‑link any missing @lsp.* highlight groups to sane defaults
+  { "theHamsta/nvim-semantic-tokens", event = "VeryLazy" },
 }

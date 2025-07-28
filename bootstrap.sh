@@ -22,7 +22,7 @@ if [[ "$OS" == "Windows_NT" ]]; then
 
   # one‑shot: run VsDevCmd *and* Neovim in the same cmd session
   cmd.exe /C "\"$VSDEV_WIN\" -arch=x64 -host_arch=x64 \
-      && nvim --headless '+Lazy\! sync' +qa"
+      && nvim --headless '+Lazy\! sync | TSUpdateSync lua vimdoc cpp python typescript tsx javascript json' +qa"
   exit 0       # everything after this is Linux/macOS only
 fi
 
@@ -57,6 +57,6 @@ if [ ! -d "$LAZY_PATH" ]; then
 fi
 
 # 5. Install/upgrade plugins ----------------------------------------------
-nvim --headless "+Lazy! sync" +qa
+nvim --headless "+Lazy! sync | TSUpdateSync lua vimdoc cpp python typescript tsx javascript json" +qa
 
 echo "✓ Neovim ready to go!"
