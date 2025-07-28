@@ -25,10 +25,16 @@ if [[ "$OS" == "Windows_NT" ]]; then
 #       && nvim --headless '+Lazy\! sync | TSUpdateSync lua vimdoc cpp python typescript tsx javascript json' +qa"
 #   exit 0       # everything after this is Linux/macOS only
 # one‑shot: run VsDevCmd *and* Neovim in the same cmd session
-cmd.exe /C '"'"$VSDEV_WIN"'" -arch=x64 -host_arch=x64 && nvim --headless \
-  -c "Lazy! sync" \
-  -c "TSUpdateSync lua vimdoc cpp python typescript tsx javascript json" \
-  -c "qa"'
+set +H   # disable Bash history expansion once, affects the whole script
+
+PARSERS="lua vimdoc cpp python typescript tsx javascript json"
+
+cmd.exe /C "\"${VSDEV_WIN}\" -arch=x64 -host_arch=x64 \
+  && nvim --headless \
+     -c \"Lazy! sync\" \
+     -c \"TSUpdateSync ${PARSERS}\" \
+     -c \"qa\""
+exit $?
 fi
 
 # 1. Check prerequisites ---------------------------------------------------
