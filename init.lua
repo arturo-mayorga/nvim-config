@@ -1,5 +1,5 @@
 -- ~/.config/nvim/init.lua -----------------------------------------------
-
+vim.opt.termguicolors = true 
 
 -- 1. bootstrap lazy.nvim -------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -17,7 +17,7 @@ require("lazy").setup("plugins", {
   install          = { colorscheme = { "tokyonight", "habamax" } },
 })
 
-vim.opt.termguicolors = true 
+
 vim.cmd.colorscheme("tokyonight-storm")
 
 -- 3. non‑plugin config ----------------------------------------------------
