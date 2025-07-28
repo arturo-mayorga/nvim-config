@@ -17,8 +17,13 @@ require("lazy").setup("plugins", {
   install          = { colorscheme = { "tokyonight", "habamax" } },
 })
 
+require("tokyonight").setup({
+  style = "storm",        -- night | storm | moon | day
+  -- transparent = true,  -- any other options you like
+})
 
-vim.cmd.colorscheme("tokyonight-storm")
+
+vim.cmd.colorscheme("tokyonight")
 
 -- 3. non‑plugin config ----------------------------------------------------
 require("config.lsp")
