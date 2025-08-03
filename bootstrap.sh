@@ -14,20 +14,45 @@ DEBUG="${DEBUG:-0}"
 # Constants
 CONFIG_REPO="${CONFIG_REPO:-https://github.com/arturo-mayorga/nvim-config}"
 TREE_SITTER_LANGS="lua vimdoc cpp python typescript tsx javascript json"
+VSDEV=""
 
 # ------------------------------------------------------------------------------
-info() { echo -e "→ $*"; }
-warn() { echo -e "⚠️  $*" >&2; }
-fail() { echo -e "❌ $*" >&2; exit 1; }
+info() { echo -e "🟢 $*"; }
+warn() { echo -e "🟡 $*" >&2; }
+fail() { echo -e "🔴 $*" >&2; exit 1; }
 
 # ------------------------------------------------------------------------------
 check_prerequisites() {
+  info "Checking general config prerequisites"
   command -v nvim >/dev/null 2>&1 || fail "Neovim ≥0.9 is required — install it first."
   command -v git  >/dev/null 2>&1 || fail "Git is required."
+
+  if [[ "${OS:-}" == "Windows_NT" ]]; then
+    info "Checking Windows config prerequisites"
+    VSWHERE="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
+
+    if [[ ! -x "$VSWHERE" ]]; then
+      fail "vswhere.exe not found. Please install Visual Studio Build Tools 2017 or newer."
+    fi
+
+    VSROOT=$("$VSWHERE" -latest \
+                      -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
+                      -property installationPath | tr -d '\r') || true
+
+    if [[ -z "$VSROOT" ]]; then
+      fail "Visual Studio Build Tools with C++ workload not found. Please install them via the VS Installer."
+    fi
+
+    VSDEV="$VSROOT/Common7/Tools/VsDevCmd.bat"
+    if [[ ! -f "$VSDEV" ]]; then
+      fail "Expected VsDevCmd.bat not found at: $VSDEV"
+    fi
+  fi
 }
 
 # ------------------------------------------------------------------------------
 get_nvim_paths() {
+  info "Loading nvim paths"
   CONFIG_DIR=$(nvim -u NONE --headless -c 'lua print(vim.fn.stdpath("config"))' +qa 2>&1)
   DATA_DIR=$(nvim  -u NONE --headless -c 'lua print(vim.fn.stdpath("data"))'   +qa 2>&1)
   LAZY_PATH="$DATA_DIR/lazy/lazy.nvim"
@@ -38,6 +63,7 @@ get_nvim_paths() {
 
 # ------------------------------------------------------------------------------
 clone_or_update_config() {
+  info "Loading latest config"
   if [[ -d "$CONFIG_DIR/.git" ]]; then
     info "Updating existing config..."
     git -C "$CONFIG_DIR" pull --ff-only
@@ -63,24 +89,11 @@ run_plugin_sync() {
 
 # ------------------------------------------------------------------------------
 bootstrap_windows_env() {
-  # Only run this on Windows
   [[ "${OS:-}" != "Windows_NT" ]] && return
 
-  info "Bootstrapping MSVC environment for Windows..."
-
-  VSWHERE="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
-  if [[ -x "$VSWHERE" ]]; then
-    VSROOT=$("$VSWHERE" -latest \
-                      -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
-                      -property installationPath | tr -d '\r')
-    VSDEV="$VSROOT/Common7/Tools/VsDevCmd.bat"
-  else
-    VSDEV="/c/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/Common7/Tools/VsDevCmd.bat"
-  fi
+  info "Bootstrapping MSVC environment using: $VSDEV"
 
   VSDEV_WIN=$(cygpath -w "$VSDEV")
-  info "Using MSVC via: $VSDEV_WIN"
-
   TMPBAT="$(mktemp --suffix=.bat)"
   TMPBAT_WIN=$(cygpath -w "$TMPBAT")
 
@@ -101,14 +114,15 @@ EOF
 
 # ------------------------------------------------------------------------------
 main() {
-  bootstrap_windows_env
   check_prerequisites
+  bootstrap_windows_env
   get_nvim_paths
   clone_or_update_config
   bootstrap_lazy
   run_plugin_sync
 
-  info "✓ Neovim ready to go!"
+  echo
+  info "--\n✅ Neovim ready to go!"
 }
 
 main "$@"
