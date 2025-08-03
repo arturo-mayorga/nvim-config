@@ -13,7 +13,7 @@ DEBUG="${DEBUG:-0}"
 
 # Constants
 CONFIG_REPO="${CONFIG_REPO:-https://github.com/arturo-mayorga/nvim-config}"
-TREE_SITTER_LANGS="lua vimdoc cpp python typescript tsx javascript json"
+TREE_SITTER_LANGS="lua vimdoc cpp python typescript tsx javascript json bash"
 VSDEV=""
 
 # ------------------------------------------------------------------------------
