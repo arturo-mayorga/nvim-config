@@ -18,7 +18,7 @@ require("lazy").setup("plugins", {
 })
 
 require("tokyonight").setup({
-  style = "storm",        -- night | storm | moon | day
+  style = "night",        -- night | storm | moon | day
   -- transparent = true,  -- any other options you like
 })
 
