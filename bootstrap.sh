@@ -26,6 +26,8 @@ check_prerequisites() {
   info "Checking general config prerequisites"
   command -v nvim >/dev/null 2>&1 || fail "Neovim ≥0.9 is required — install it first."
   command -v git  >/dev/null 2>&1 || fail "Git is required."
+  command -v rg   >/dev/null 2>&1 || fail "'rg' (ripgrep) is required — install it from https://github.com/BurntSushi/ripgrep#installation"
+
 
   if [[ "${OS:-}" == "Windows_NT" ]]; then
     info "Checking Windows config prerequisites"
