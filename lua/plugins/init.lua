@@ -8,6 +8,14 @@ return {
   { "williamboman/mason-lspconfig.nvim" },
   { "williamboman/mason-null-ls.nvim" },   -- auto‑installs null‑ls/none‑ls sources
 
+  -- Completion engine and sources
+  { "hrsh7th/nvim-cmp" },                   -- completion engine
+  { "hrsh7th/cmp-nvim-lsp" },               -- LSP source for cmp
+  { "L3MON4D3/LuaSnip" },                   -- Snippet engine (required by cmp)
+  { "saadparwaiz1/cmp_luasnip" },           -- Snippet completions
+  { "hrsh7th/cmp-buffer" },                 -- Buffer completions (optional)
+  { "hrsh7th/cmp-path" },                   -- Filesystem path completions (optional)
+
   -- Format/lint
   { "nvimtools/none-ls.nvim" },
 
