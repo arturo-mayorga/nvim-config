@@ -7,7 +7,7 @@ A modern Neovim configuration for enhanced development experience, including LSP
 To set up this configuration on a fresh Neovim install, simply run:
 
 ```bash
-curl https://github.com/arturo-mayorga/nvim-config/raw/main/bootstrap.sh | bash
+curl https://raw.githubusercontent.com/arturo-mayorga/nvim-config/refs/heads/master/bootstrap.sh | bash
 ```
 
 This will automatically clone the repo and set up all required plugins and settings.
