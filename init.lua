@@ -20,6 +20,14 @@ require("lazy").setup("plugins", {
 require("tokyonight").setup({
   style = "night",        -- night | storm | moon | day
   -- transparent = true,  -- any other options you like
+  on_colors = function(colors)
+    colors.bg         = "#222222"  -- main background
+    colors.bg_dark    = "#1e1e1e"  -- for inactive splits
+    colors.bg_float   = "#2a2a2a"  -- floating windows
+    colors.bg_popup   = "#2a2a2a"  -- popups / cmp menu
+    colors.bg_sidebar = "#1f1f1f"  -- NvimTree / sidebar
+    colors.bg_statusline = "#1f1f1f"  -- statusline bg
+  end,
 })
 
 
