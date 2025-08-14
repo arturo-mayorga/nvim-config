@@ -1,0 +1,16 @@
+{
+    "default": true,
+    "MD013": false,
+    "MD041": false,
+    "MD033": {
+        "allowed_elements": [
+            "a",
+            "img"
+        ]
+    },
+    "MD036": false,
+    "MD029": false,
+    "MD007": {
+        "indent": 2
+    }
+}
