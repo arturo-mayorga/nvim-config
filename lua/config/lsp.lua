@@ -1,7 +1,7 @@
 require("mason").setup()
 local mason_lspconfig = require("mason-lspconfig")
 mason_lspconfig.setup({
-  ensure_installed = { "clangd", "pyright", "ts_ls", "bashls" },
+  ensure_installed = { "clangd", "pyright", "ts_ls", "bashls", "marksman" },
   automatic_installation = true,
 })
 
