@@ -6,7 +6,7 @@ if not fml._patched_for_windows then
   local original = fml.follow_link
 
   fml.follow_link = function()
-    local link = fml.get_link_under_cursor()
+    local link = vim.fn.expand("<cfile>")
     if not link or link == "" then return end
 
     -- Let plugin handle web URLs or markdown heading anchors
