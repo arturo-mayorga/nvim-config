@@ -6,25 +6,30 @@ function M.follow_link()
   local link = fml.get_link_under_cursor()
   if not link or link == "" then return end
 
-  -- If it's a URL or heading link, let the plugin handle it
   if link:match("^https?://") or link:match("^#") then
     return fml.follow_link()
   end
 
-  -- Otherwise try to open as local file path
   local file, anchor = link:match("^(.-)#(.+)$")
   file = file or link
 
-  if not file:match("^/") and not file:match("^%a:[/\\]") and not file:match("^~") then
+
+  if not file:match("^%a:[/\\]") and not file:match("^/") and not file:match("^~") then
     local base = vim.fn.expand("%:p:h")
     file = vim.fn.fnamemodify(base .. "/" .. file, ":p")
   end
 
-  local path, lnum = file:match("^(.-):(%d+)$")
+  if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+    file = file:gsub("/", "\\")
+  end
+
+  local escaped = vim.fn.fnameescape(file)
+
+  local path, lnum = escaped:match("^(.-):(%d+)$")
   if path and lnum then
-    vim.cmd(("edit +%s %s"):format(lnum, vim.fn.fnameescape(path)))
+    vim.cmd(("edit +%s %s"):format(lnum, path))
   else
-    vim.cmd(("edit %s"):format(vim.fn.fnameescape(file)))
+    vim.cmd(("edit %s"):format(escaped))
   end
 
   if anchor and anchor ~= "" then
