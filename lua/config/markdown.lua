@@ -24,7 +24,7 @@ function M.follow_link()
   if path and lnum then
     vim.cmd(("edit +%s %s"):format(lnum, vim.fn.fnameescape(path)))
   else
-    vim.cmd.edit(vim.fn.fnameescape(file))
+    vim.cmd(("edit %s"):format(vim.fn.fnameescape(file)))
   end
 
   if anchor and anchor ~= "" then
