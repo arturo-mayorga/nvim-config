@@ -78,17 +78,16 @@ local function apply_subtle_md_stripes()
 
   for i = 1, 6 do
     -- IMPORTANT: set ONLY bg so we don't touch the heading text color (fg)
-    vim.api.nvim_set_hl(0, ("RenderMarkdownH%dBg"):format(i), { bg = stripes[i] })
+    vim.api.nvim_set_hl(0, ("RenderMarkdownH%dBg"):format(i), { bg = stripes[i], default = false })
   end
 end
 
--- Configure render-markdown (only what we need to change)
+-- Safe plugin setup
 local ok, rm = pcall(require, "render-markdown")
 if ok then
   rm.setup({
     heading = {
       width = "block",  -- no more full-row bands
-      -- use the plugin's default background group names, so we only change bg via :hi
       backgrounds = {
         "RenderMarkdownH1Bg",
         "RenderMarkdownH2Bg",
@@ -100,18 +99,24 @@ if ok then
       -- DO NOT set 'foregrounds' here → keeps default heading text colors
     },
   })
+
+  -- Apply now and re-apply after colorscheme/theme reloads
+  apply_subtle_md_stripes()
+
+  -- Re-apply after theme reloads (colorscheme overrides)
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+      vim.schedule(apply_subtle_md_stripes)
+    end,
+    desc = "Re-apply markdown heading stripes after colorscheme reload",
+  })
+
+  -- Re-apply when entering markdown buffers
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+      vim.schedule(apply_subtle_md_stripes)
+    end,
+    desc = "Ensure markdown heading backgrounds in markdown files",
+  })
 end
-
--- Apply now and re-apply after colorscheme/theme reloads
-apply_subtle_md_stripes()
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = apply_subtle_md_stripes,
-  desc = "Re-apply subtle markdown heading backgrounds after colorscheme",
-})
-
--- (Optional) also reassert when entering markdown buffers
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown",
-  callback = apply_subtle_md_stripes,
-  desc = "Ensure markdown heading backgrounds stay subtle in markdown buffers",
-})
