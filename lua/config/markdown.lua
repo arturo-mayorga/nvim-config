@@ -65,37 +65,50 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 
--- headlines.nvim config and custom highlights
-local has_headlines, headlines = pcall(require, "headlines")
-if has_headlines then
-  headlines.setup({
-    markdown = {
-      headline_highlights = {
-        "CustomHeadline1",
-        "CustomHeadline2",
-        "CustomHeadline3",
-        "CustomHeadline4",
-        "CustomHeadline5",
-        "CustomHeadline6",
-      },
-      bullet_highlights = { "CustomBullet" },
-      dash_highlight = "CustomDash",
+local function set_md_colors()
+  -- Make our own gentle bg for headers (or link to Normal to remove stripes entirely)
+  vim.api.nvim_set_hl(0, "MDHeadingBg", { link = "Normal" })     -- no stripe
+  -- If you want *slight* striping instead, comment the line above and try:
+  -- vim.api.nvim_set_hl(0, "MDHeadingBg", { bg = "#242424" })   -- subtle alt bg
+
+  -- Optional: tune bullets/dashes/code to taste
+  vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { fg = "#9ece6a", bg = "NONE" })
+  vim.api.nvim_set_hl(0, "RenderMarkdownDash",   { fg = "#7aa2f7", bg = "NONE" })
+  -- inline/code blocks if you want them flatter:
+  -- vim.api.nvim_set_hl(0, "RenderMarkdownCode",        { bg = "#262a33" })
+  -- vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline",  { bg = "#1f2335" })
+end
+
+local function setup_render_markdown()
+  local ok, rm = pcall(require, "render-markdown")
+  if not ok then return end
+
+  rm.setup({
+    -- only change what we need; keep the rest at defaults
+    heading = {
+      width = "block",  -- default is "full" (that’s what causes full-width bands) :contentReference[oaicite:1]{index=1}
+      -- point all heading backgrounds at our custom group so they’re uniform
+      backgrounds = { "MDHeadingBg","MDHeadingBg","MDHeadingBg","MDHeadingBg","MDHeadingBg","MDHeadingBg" },  -- :contentReference[oaicite:2]{index=2}
+      -- you can also tweak foregrounds if desired:
+      -- foregrounds = { "RenderMarkdownH1","RenderMarkdownH2","RenderMarkdownH3","RenderMarkdownH4","RenderMarkdownH5","RenderMarkdownH6" },
     },
   })
 
+  -- Apply our highlight overrides now and also after any colorscheme change
+  set_md_colors()
   vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = function()
-      vim.api.nvim_set_hl(0, "CustomHeadline1", { bg = "#2a2a2a" })
-      vim.api.nvim_set_hl(0, "CustomHeadline2", { bg = "#242424" })
-      vim.api.nvim_set_hl(0, "CustomHeadline3", { bg = "#2a2a2a" })
-      vim.api.nvim_set_hl(0, "CustomHeadline4", { bg = "#242424" })
-      vim.api.nvim_set_hl(0, "CustomHeadline5", { bg = "#2a2a2a" })
-      vim.api.nvim_set_hl(0, "CustomHeadline6", { bg = "#242424" })
-
-      vim.api.nvim_set_hl(0, "CustomBullet", { fg = "#9ece6a", bg = "NONE" })
-      vim.api.nvim_set_hl(0, "CustomDash", { fg = "#7aa2f7", bg = "NONE" })
-    end,
+    callback = function() set_md_colors() end,
+    desc = "Reapply markdown highlight tweaks after colorscheme",
   })
 end
+
+-- Run once on startup
+setup_render_markdown()
+
+-- Also reassert colors whenever a markdown buffer opens (cheap + belt&suspenders)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = set_md_colors,
+  desc = "Ensure markdown highlights are applied for markdown buffers",
+})
 
