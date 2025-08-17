@@ -2,6 +2,7 @@ local M = {}
 
 -- Function to follow link safely
 function M.follow_link()
+  vim.notify("running m.follow_link")
   local fml = require("follow-md-links")
   local link = fml.get_link_under_cursor()
   if not link or link == "" then return end
