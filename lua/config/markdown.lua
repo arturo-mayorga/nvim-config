@@ -70,10 +70,11 @@ local function apply_subtle_md_stripes()
   local stripes = {
     "#ff0000", -- H1 text #7aa2f7
     "#222222", -- H2 text #e0af68
-    "#222222", -- H3 text #1abc9c
-    "#222222", -- H4 text #bb9af7
-    "#222222", -- H5 text #9d7cd8
-    "#242525", -- H6 text #c0caf5
+    "#282A25", -- H3 text #9ece6a
+    "#222222", -- H4 text #1abc9c
+    "#222222", -- H5 text #bb9af7
+    "#222222", -- H6 text #9d7cd8
+    
   }
 
   for i = 1, 6 do
