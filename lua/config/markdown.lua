@@ -1,24 +1,24 @@
 -- lua/config/markdown.lua
 local fml = require("follow-md-links")
 
--- Patch plugin for Windows if not already patched
 if not fml._patched_for_windows then
   local original = fml.follow_link
 
   fml.follow_link = function()
     local link = vim.fn.expand("<cfile>")
+    
     if not link or link == "" then return end
+    if not (link:match("^https?://") or link:match("^#") or link:match("%.md$") or link:match("^%.?/")) then
+      return
+    end
 
-    -- Let plugin handle web URLs or markdown heading anchors
     if link:match("^https?://") or link:match("^#") then
       return original()
     end
 
-    -- Try to open local file paths (fix for Windows)
     local file, anchor = link:match("^(.-)#(.+)$")
     file = file or link
 
-    -- If not absolute, convert to full path
     if not file:match("^/") and not file:match("^%a:[/\\]") and not file:match("^~") then
       local base = vim.fn.expand("%:p:h")
       file = vim.fn.fnamemodify(base .. "/" .. file, ":p")
@@ -31,7 +31,6 @@ if not fml._patched_for_windows then
       vim.cmd(("edit %s"):format(vim.fn.fnameescape(file)))
     end
 
-    -- Jump to heading if present
     if anchor and anchor ~= "" then
       local pat = "\\v^#+\\s+" .. vim.fn.escape(anchor, "\\/.*$^~[]")
       if vim.fn.search(pat, "w") == 0 then
