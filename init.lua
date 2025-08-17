@@ -30,8 +30,8 @@ require("tokyonight").setup({
   end,
 })
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
+vim.api.nvim_create_autocmd("User", {
+  pattern = "HeadlinesSetup",
   callback = function()
     -- Remove or soften alternate background highlights
     vim.api.nvim_set_hl(0, "Headline", { bg = "NONE" })
