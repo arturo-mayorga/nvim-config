@@ -30,6 +30,8 @@ require("tokyonight").setup({
   end,
 })
 
+vim.cmd.colorscheme("tokyonight")
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "HeadlinesSetup",
   callback = function()
@@ -47,9 +49,6 @@ vim.api.nvim_create_autocmd("User", {
     vim.api.nvim_set_hl(0, "Bullet", { bg = "NONE", fg = "#9ece6a" })
   end,
 })
-
-
-vim.cmd.colorscheme("tokyonight")
 
 -- 3. non‑plugin config ----------------------------------------------------
 require("config.lsp")
