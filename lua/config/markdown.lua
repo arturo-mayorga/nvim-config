@@ -88,7 +88,7 @@ local ok, rm = pcall(require, "render-markdown")
 if ok then
   rm.setup({
     heading = {
-      -- width = "block",  -- no more full-row bands
+      width = "block",  -- no more full-row bands
       backgrounds = {
         "RenderMarkdownH1Bg",
         "RenderMarkdownH2Bg",
