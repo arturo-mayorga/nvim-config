@@ -57,7 +57,7 @@ map("x", "<leader>p", '"_dP', vim.tbl_extend("force", opts, { desc = "Paste w/o 
 ----------------------------------------------------------------
 -- Markdown ---------------------------------------------------
 ----------------------------------------------------------------
-map("n", "<BS>", "<cmd>edit #<CR>", "Back to previous file")             -- Follow link under cursor (follow-md-links maps <CR> already; keep Backspace to jump back)
-map("n", "gh", "<cmd>Telescope heading<CR>", "Headings (Telescope)")     -- Telescope: jump to headings in current buffer
-map("n", "<leader>mp", "<cmd>Glow<CR>", "Markdown preview (Glow)")       -- Quick preview in terminal
-map("n", "<leader>mt", "<cmd>TableModeToggle<CR>", "Toggle Table Mode")  -- Toggle Table Mode
+map("n", "<BS>", "<cmd>edit #<CR>", "Back to previous file", opts)             -- Follow link under cursor (follow-md-links maps <CR> already; keep Backspace to jump back)
+map("n", "gh", "<cmd>Telescope heading<CR>", "Headings (Telescope)", opts)     -- Telescope: jump to headings in current buffer
+map("n", "<leader>mp", "<cmd>Glow<CR>", "Markdown preview (Glow)", opts)       -- Quick preview in terminal
+map("n", "<leader>mt", "<cmd>TableModeToggle<CR>", "Toggle Table Mode", opts)  -- Toggle Table Mode
