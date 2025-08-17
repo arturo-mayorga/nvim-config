@@ -63,3 +63,39 @@ vim.api.nvim_create_autocmd("FileType", {
     map("n", "<leader>mt", "<cmd>TableModeToggle<CR>", "Toggle Table Mode")
   end,
 })
+
+
+-- headlines.nvim config and custom highlights
+local has_headlines, headlines = pcall(require, "headlines")
+if has_headlines then
+  headlines.setup({
+    markdown = {
+      headline_highlights = {
+        "CustomHeadline1",
+        "CustomHeadline2",
+        "CustomHeadline3",
+        "CustomHeadline4",
+        "CustomHeadline5",
+        "CustomHeadline6",
+      },
+      bullet_highlights = { "CustomBullet" },
+      dash_highlight = "CustomDash",
+    },
+  })
+
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = function()
+      vim.api.nvim_set_hl(0, "CustomHeadline1", { bg = "#2a2a2a" })
+      vim.api.nvim_set_hl(0, "CustomHeadline2", { bg = "#242424" })
+      vim.api.nvim_set_hl(0, "CustomHeadline3", { bg = "#2a2a2a" })
+      vim.api.nvim_set_hl(0, "CustomHeadline4", { bg = "#242424" })
+      vim.api.nvim_set_hl(0, "CustomHeadline5", { bg = "#2a2a2a" })
+      vim.api.nvim_set_hl(0, "CustomHeadline6", { bg = "#242424" })
+
+      vim.api.nvim_set_hl(0, "CustomBullet", { fg = "#9ece6a", bg = "NONE" })
+      vim.api.nvim_set_hl(0, "CustomDash", { fg = "#7aa2f7", bg = "NONE" })
+    end,
+  })
+end
+

@@ -32,22 +32,6 @@ require("tokyonight").setup({
 
 vim.cmd.colorscheme("tokyonight")
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "tokyonight",
-  callback = function()
-    vim.defer_fn(function()
-      vim.api.nvim_set_hl(0, "Headline",  { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Headline1", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Headline2", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Headline3", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Headline4", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Headline5", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Headline6", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "Dash",      { bg = "NONE", fg = "#7aa2f7" })
-      vim.api.nvim_set_hl(0, "Bullet",    { bg = "NONE", fg = "#9ece6a" })
-    end, 100)  -- wait 100ms
-  end,
-})
 
 -- 3. non‑plugin config ----------------------------------------------------
 require("config.lsp")
