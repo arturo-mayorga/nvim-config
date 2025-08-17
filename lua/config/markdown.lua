@@ -68,7 +68,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local function apply_subtle_md_stripes()
   -- Pick gentle shades close to your #222222 base (tokyonight bg in your setup)
   local stripes = {
-    "#242424", -- H1
+    "#ff0000", -- H1
     "#252525", -- H2
     "#242424", -- H3
     "#252525", -- H4
