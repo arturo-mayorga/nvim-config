@@ -30,6 +30,24 @@ require("tokyonight").setup({
   end,
 })
 
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    -- Remove or soften alternate background highlights
+    vim.api.nvim_set_hl(0, "Headline", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Headline1", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Headline2", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Headline3", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Headline4", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Headline5", { bg = "NONE" })
+    vim.api.nvim_set_hl(0, "Headline6", { bg = "NONE" })
+
+    -- Bullet characters (●, ◆, etc.)
+    vim.api.nvim_set_hl(0, "Dash", { bg = "NONE", fg = "#7aa2f7" })  -- adjust color
+    vim.api.nvim_set_hl(0, "Bullet", { bg = "NONE", fg = "#9ece6a" })
+  end,
+})
+
 
 vim.cmd.colorscheme("tokyonight")
 
