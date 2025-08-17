@@ -54,17 +54,17 @@ map("n", "<C-l>", "<C-w>l", opts)
 -- Paste over selection without yanking it
 map("x", "<leader>p", '"_dP', vim.tbl_extend("force", opts, { desc = "Paste w/o clobbering register" }))
 
-----------------------------------------------------------------
--- Markdown ---------------------------------------------------
-----------------------------------------------------------------
--- map("n", "<BS>", "<cmd>edit #<CR>",                 vim.tbl_extend("force", opts, { desc = "Back to previous file" }))
--- map("n", "gh", "<cmd>Telescope heading<CR>",        vim.tbl_extend("force", opts, { desc = "Headings (Telescope)" }))
--- map("n", "<leader>mp", "<cmd>Glow<CR>",             vim.tbl_extend("force", opts, { desc = "Markdown preview (Glow)" }))
--- map("n", "<leader>mt", "<cmd>TableModeToggle<CR>",  vim.tbl_extend("force", opts, { desc = "Toggle Table Mode" }))
--- local md = require("config.markdown")
--- map("n", "<CR>", md.follow_link,               vim.tbl_extend("force", opts, { desc = "Markdown: follow link" }))
--- map("n", "<leader>xl", md.follow_link,         vim.tbl_extend("force", opts, { desc = "Markdown: follow link" }))
-map("n", "<BS>", "<cmd>edit #<CR>",            vim.tbl_extend("force", opts, { desc = "Back to previous file" }))
-map("n", "gh",   "<cmd>Telescope heading<CR>", vim.tbl_extend("force", opts, { desc = "Headings (Telescope)" }))
-map("n", "<leader>mp", "<cmd>Glow<CR>",        vim.tbl_extend("force", opts, { desc = "Markdown preview (Glow)" }))
-map("n", "<leader>mt", "<cmd>TableModeToggle<CR>", vim.tbl_extend("force", opts, { desc = "Toggle Table Mode" }))
+-- ----------------------------------------------------------------
+-- -- Markdown ---------------------------------------------------
+-- ----------------------------------------------------------------
+-- -- map("n", "<BS>", "<cmd>edit #<CR>",                 vim.tbl_extend("force", opts, { desc = "Back to previous file" }))
+-- -- map("n", "gh", "<cmd>Telescope heading<CR>",        vim.tbl_extend("force", opts, { desc = "Headings (Telescope)" }))
+-- -- map("n", "<leader>mp", "<cmd>Glow<CR>",             vim.tbl_extend("force", opts, { desc = "Markdown preview (Glow)" }))
+-- -- map("n", "<leader>mt", "<cmd>TableModeToggle<CR>",  vim.tbl_extend("force", opts, { desc = "Toggle Table Mode" }))
+-- -- local md = require("config.markdown")
+-- -- map("n", "<CR>", md.follow_link,               vim.tbl_extend("force", opts, { desc = "Markdown: follow link" }))
+-- -- map("n", "<leader>xl", md.follow_link,         vim.tbl_extend("force", opts, { desc = "Markdown: follow link" }))
+-- map("n", "<BS>", "<cmd>edit #<CR>",            vim.tbl_extend("force", opts, { desc = "Back to previous file" }))
+-- map("n", "gh",   "<cmd>Telescope heading<CR>", vim.tbl_extend("force", opts, { desc = "Headings (Telescope)" }))
+-- map("n", "<leader>mp", "<cmd>Glow<CR>",        vim.tbl_extend("force", opts, { desc = "Markdown preview (Glow)" }))
+-- map("n", "<leader>mt", "<cmd>TableModeToggle<CR>", vim.tbl_extend("force", opts, { desc = "Toggle Table Mode" }))
