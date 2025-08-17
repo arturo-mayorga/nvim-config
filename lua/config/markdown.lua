@@ -13,6 +13,8 @@ function M.follow_link()
   local file, anchor = link:match("^(.-)#(.+)$")
   file = file or link
 
+  vim.notify("Trying to open: " .. file)
+
 
   if not file:match("^%a:[/\\]") and not file:match("^/") and not file:match("^~") then
     local base = vim.fn.expand("%:p:h")
@@ -23,12 +25,19 @@ function M.follow_link()
     file = file:gsub("/", "\\")
   end
 
+  vim.notify("Trying to open(win switch): " .. file)
+
   local escaped = vim.fn.fnameescape(file)
+
+  vim.notify("Trying to open(escaped): " .. escaped)
 
   local path, lnum = escaped:match("^(.-):(%d+)$")
   if path and lnum then
+    vim.notify("lnum: " .. lnum)
+    vim.notify("path: " .. path)
     vim.cmd(("edit +%s %s"):format(lnum, path))
   else
+    vim.notify("escaped: " .. escaped)
     vim.cmd(("edit %s"):format(escaped))
   end
 
