@@ -17,6 +17,34 @@ require("lazy").setup("plugins", {
   install          = { colorscheme = { "tokyonight", "habamax" } },
 })
 
+local function enable_transparency()
+	-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+
+	local hl_groups = {
+    "Normal",
+    "NormalNC",
+    "NormalFloat",
+    "SignColumn",
+    "LineNr",
+    "EndOfBuffer",
+    "MsgArea",
+    "TelescopeNormal",
+    "TelescopeBorder",
+    "FloatBorder",
+    "WinSeparator",
+    -- "StatusLine",
+    "StatusLineNC",
+    "Pmenu",
+    "PmenuSel",
+    "PmenuSbar",
+    "PmenuThumb",
+    }
+
+    for _, name in ipairs(hl_groups) do
+      vim.api.nvim_set_hl(0, name, { bg = "none" })
+    end
+end
+
 require("tokyonight").setup({
   style = "night",        -- night | storm | moon | day
   -- transparent = true,  -- any other options you like
@@ -31,6 +59,7 @@ require("tokyonight").setup({
 })
 
 vim.cmd.colorscheme("tokyonight")
+enable_transparency()
 
 
 -- 3. non‑plugin config ----------------------------------------------------

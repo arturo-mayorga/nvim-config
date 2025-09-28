@@ -33,6 +33,7 @@ return {
 
   -- Theme with full Tree‑sitter + LSP support
   { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
+  { "nvim-lualine/lualine.nvim", dependencies={"nvim-tree/nvim-web-devicons"}, opts={theme="tokyonight"}},
 
   -- Auto‑link any missing @lsp.* highlight groups to sane defaults
   { "theHamsta/nvim-semantic-tokens", event = "VeryLazy" },

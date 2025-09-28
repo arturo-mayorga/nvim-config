@@ -38,6 +38,9 @@ This will automatically clone the repo and set up all required plugins and setti
 - Git
 - curl
 
+## Recommended
+- JetBrainsMono from [nerdfonts.com](https://www.nerdfonts.com/font-downloads)
+
 ### Windows Prerequisites
 If you are using Windows:
 - Make sure you have [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim#windows) installed and added to your PATH.
