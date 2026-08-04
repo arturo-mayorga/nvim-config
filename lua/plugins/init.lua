@@ -25,7 +25,10 @@ return {
   { "jay-babu/mason-nvim-dap.nvim" },
 
   -- Treesitter
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  -- NOTE: `main` branch requires Neovim 0.12+ and the tree-sitter CLI (>=0.26.1).
+  -- The old `master` branch is frozen and breaks on 0.12 (query API changed in 0.11).
+  -- Does not support lazy-loading.
+  { "nvim-treesitter/nvim-treesitter", branch = "main", lazy = false, build = ":TSUpdate" },
 
   -- AI / Copilot chat
   { "zbirenbaum/copilot.lua",           lazy = false },  

@@ -2,7 +2,7 @@
 
 -- Setup Mason DAP (automated debug adapter installation)
 require("mason-nvim-dap").setup({
-  ensure_installed = { "cppdbg", "debugpy", "node2" },
+  ensure_installed = { "cppdbg", "debugpy", "js" },
   automatic_installation = true,
 })
 
