@@ -1,5 +1,12 @@
 -- ~/.config/nvim/init.lua -----------------------------------------------
-vim.opt.termguicolors = true 
+vim.opt.termguicolors = true
+
+-- 0. leader keys ---------------------------------------------------------
+-- MUST be set before lazy.nvim loads: any plugin that defines a <leader>
+-- mapping resolves <leader> at definition time, so setting this later would
+-- bind those plugins to the old leader ("\").
+vim.g.mapleader      = " "
+vim.g.maplocalleader = "\\"
 
 -- 1. bootstrap lazy.nvim -------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

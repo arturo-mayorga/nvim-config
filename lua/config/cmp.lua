@@ -10,7 +10,10 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert({
     ["<C-Space>"] = cmp.mapping.complete(),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item
+    -- nvim-cmp's documented default. With select = true, <CR> accepts the first
+    -- entry even when nothing was explicitly selected, so Enter inserts a
+    -- completion where you wanted a newline.
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
